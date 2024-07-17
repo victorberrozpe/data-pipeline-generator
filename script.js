@@ -1,21 +1,41 @@
 document.addEventListener('DOMContentLoaded', function() {
     const customSelects = document.querySelectorAll('.custom-select');
-    
+
     customSelects.forEach(select => {
         const selected = select.querySelector('.select-selected');
         const options = select.querySelector('.select-items');
-        
+        const selectedOptionsContainer = document.createElement('div');
+        selectedOptionsContainer.classList.add('selected-options');
+        select.appendChild(selectedOptionsContainer);
+
         selected.addEventListener('click', () => {
             options.classList.toggle('select-hide');
             selected.classList.toggle('select-arrow-active');
         });
-        
+
         options.addEventListener('click', event => {
-            if (event.target.tagName === 'DIV') {
-                selected.innerHTML = event.target.innerHTML;
-                selected.setAttribute('data-value', event.target.getAttribute('data-value'));
-                options.classList.add('select-hide');
-                selected.classList.remove('select-arrow-active');
+            if (event.target.tagName === 'DIV' || event.target.parentElement.tagName === 'DIV') {
+                const option = event.target.tagName === 'DIV' ? event.target : event.target.parentElement;
+                const value = option.getAttribute('data-value');
+                const imgSrc = option.querySelector('img').getAttribute('src');
+                const text = option.textContent.trim();
+
+                // Check if the option is already selected
+                const alreadySelected = selectedOptionsContainer.querySelector(`div[data-value="${value}"]`);
+
+                if (alreadySelected) {
+                    // Remove the selected option
+                    selectedOptionsContainer.removeChild(alreadySelected);
+                } else {
+                    // Add the selected option
+                    const selectedOption = document.createElement('div');
+                    selectedOption.setAttribute('data-value', value);
+                    selectedOption.innerHTML = `<img src="${imgSrc}" alt="${text}"> ${text}`;
+                    selectedOptionsContainer.appendChild(selectedOption);
+                }
+
+                // Adjust the min-height based on the number of selected items
+                adjustHeight(select);
             }
         });
     });
@@ -28,21 +48,54 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+
+    function adjustHeight(select) {
+        const selectedOptionsContainer = select.querySelector('.selected-options');
+        const numSelected = selectedOptionsContainer.children.length;
+        if (numSelected === 0) {
+            select.style.minHeight = '80px';
+        } else {
+            select.style.minHeight = 'auto';
+        }
+    }
 });
 
 function generateCode() {
-    const ingestion = document.querySelector('.stage:nth-child(1) .select-selected').getAttribute('data-value');
-    const transformation = document.querySelector('.stage:nth-child(3) .select-selected').getAttribute('data-value');
-    const storage = document.querySelector('.stage:nth-child(2) .select-selected').getAttribute('data-value');
-    const analysis = document.querySelector('.stage:nth-child(4) .select-selected').getAttribute('data-value');
-    const orchestration = document.querySelector('.stage:nth-child(5) .select-selected').getAttribute('data-value');
-
+    const stages = ['ingestion', 'storage', 'transformation', 'analysis', 'orchestration'];
     let code = '';
 
-    // Ingestion
-    switch (ingestion) {
+    stages.forEach(stage => {
+        const selectedOptions = document.querySelectorAll(`#${stage} .selected-options div[data-value]`);
+        selectedOptions.forEach(option => {
+            const value = option.getAttribute('data-value');
+            code += generateStageCode(stage, value);
+        });
+    });
+
+    document.getElementById('generated-code').innerText = code;
+}
+
+function generateStageCode(stage, value) {
+    switch (stage) {
+        case 'ingestion':
+            return ingestionCode(value);
+        case 'storage':
+            return storageCode(value);
+        case 'transformation':
+            return transformationCode(value);
+        case 'analysis':
+            return analysisCode(value);
+        case 'orchestration':
+            return orchestrationCode(value);
+        default:
+            return '';
+    }
+}
+
+function ingestionCode(value) {
+    switch (value) {
         case 'airbyte':
-            code += `
+            return `
             # Airbyte Ingestion
             resource "airbyte_source" "example" {
               name = "example"
@@ -53,9 +106,8 @@ function generateCode() {
               }
             }
             `;
-            break;
         case 'dlt':
-            code += `
+            return `
             # Dlt Ingestion
             resource "dlt_source" "example" {
               name = "example"
@@ -64,35 +116,38 @@ function generateCode() {
               }
             }
             `;
-            break;
+        default:
+            return '';
     }
+}
 
-    // Transformation
-    switch (transformation) {
+function transformationCode(value) {
+    switch (value) {
         case 'dbt':
-            code += `
+            return `
             # dbt Transformation
             resource "dbt_project" "example" {
               name = "example"
               profiles_dir = "/path/to/profiles"
             }
             `;
-            break;
         case 'dataform':
-            code += `
+            return `
             # Dataform Transformation
             resource "dataform_project" "example" {
               name = "example"
               project_dir = "/path/to/project"
             }
             `;
-            break;
+        default:
+            return '';
     }
+}
 
-    // Storage
-    switch (storage) {
+function storageCode(value) {
+    switch (value) {
         case 'bigquery':
-            code += `
+            return `
             # BigQuery Storage
             resource "google_bigquery_dataset" "example" {
               dataset_id = "example"
@@ -100,22 +155,23 @@ function generateCode() {
               location = "US"
             }
             `;
-            break;
         case 'cloud_storage':
-            code += `
+            return `
             # Cloud Storage with BigLake
             resource "google_storage_bucket" "example" {
               name = "example-bucket"
               location = "US"
             }
             `;
-            break;
+        default:
+            return '';
     }
+}
 
-    // Analysis
-    switch (analysis) {
+function analysisCode(value) {
+    switch (value) {
         case 'looker':
-            code += `
+            return `
             # Looker Studio Analysis
             resource "looker_dashboard" "example" {
               name = "example"
@@ -124,9 +180,8 @@ function generateCode() {
               }
             }
             `;
-            break;
         case 'metabase':
-            code += `
+            return `
             # Metabase Analysis
             resource "metabase_dashboard" "example" {
               name = "example"
@@ -135,9 +190,8 @@ function generateCode() {
               }
             }
             `;
-            break;
         case 'lightdash':
-            code += `
+            return `
             # Lightdash Analysis
             resource "lightdash_project" "example" {
               name = "example"
@@ -146,13 +200,15 @@ function generateCode() {
               }
             }
             `;
-            break;
+        default:
+            return '';
     }
+}
 
-    // Orchestration
-    switch (orchestration) {
+function orchestrationCode(value) {
+    switch (value) {
         case 'airflow':
-            code += `
+            return `
             # Airflow Orchestration
             resource "airflow_dag" "example" {
               name = "example"
@@ -161,9 +217,8 @@ function generateCode() {
               }
             }
             `;
-            break;
         case 'dagster':
-            code += `
+            return `
             # Dagster Orchestration
             resource "dagster_pipeline" "example" {
               name = "example"
@@ -172,8 +227,7 @@ function generateCode() {
               }
             }
             `;
-            break;
+        default:
+            return '';
     }
-
-    document.getElementById('generated-code').innerText = code;
 }
