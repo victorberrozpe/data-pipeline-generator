@@ -7,22 +7,100 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Data Pipeline Generator</h1>
-    <div id="diagram">
-        <img src="assets/diagram.png" alt="Pipeline Diagram">
-    </div>
-    <form id="pipeline-form">
-        <label for="technology">Select Technology:</label>
-        <select id="technology" name="technology">
-            <option value="aws">AWS</option>
-            <option value="gcp">GCP</option>
-            <option value="azure">Azure</option>
-        </select>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Data Pipeline Generator</h1>
+        <div class="pipeline">
+            <div class="stage">
+                <label for="ingestion">Ingestion:</label>
+                <div class="custom-select">
+                    <div class="select-selected">Choose Ingestion</div>
+                    <div class="select-items select-hide">
+                        <div data-value="airbyte">
+                            <img src="assets/icons/airbyte.png" alt="Airbyte"> Airbyte
+                        </div>
+                        <div data-value="dlt">
+                            <img src="assets/icons/dlt.png" alt="Dlt"> Dlt
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stage">
+                <label for="storage">Storage:</label>
+                <div class="custom-select">
+                    <div class="select-selected">Choose Storage</div>
+                    <div class="select-items select-hide">
+                        <div data-value="bigquery">
+                            <img src="assets/icons/bigquery.png" alt="BigQuery"> BigQuery
+                        </div>
+                        <div data-value="cloud_storage">
+                            <img src="assets/icons/cloud_storage.png" alt="Cloud Storage"> Cloud Storage with BigLake
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stage">
+                <label for="transformation">Transformation:</label>
+                <div class="custom-select">
+                    <div class="select-selected">Choose Transformation</div>
+                    <div class="select-items select-hide">
+                        <div data-value="dbt">
+                            <img src="assets/icons/dbt.png" alt="dbt"> dbt
+                        </div>
+                        <div data-value="dataform">
+                            <img src="assets/icons/dataform.png" alt="Dataform"> Dataform
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stage">
+                <label for="analysis">Analysis:</label>
+                <div class="custom-select">
+                    <div class="select-selected">Choose Analysis</div>
+                    <div class="select-items select-hide">
+                        <div data-value="looker">
+                            <img src="assets/icons/looker.png" alt="Looker"> Looker Studio
+                        </div>
+                        <div data-value="metabase">
+                            <img src="assets/icons/metabase.png" alt="Metabase"> Metabase
+                        </div>
+                        <div data-value="lightdash">
+                            <img src="assets/icons/lightdash.png" alt="Lightdash"> Lightdash
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stage">
+                <label for="orchestration">Orchestration:</label>
+                <div class="custom-select">
+                    <div class="select-selected">Choose Orchestration</div>
+                    <div class="select-items select-hide">
+                        <div data-value="airflow">
+                            <img src="assets/icons/airflow.png" alt="Airflow"> Airflow
+                        </div>
+                        <div data-value="dagster">
+                            <img src="assets/icons/dagster.png" alt="Dagster"> Dagster
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <button type="button" onclick="generateCode()">Get Pipeline Code</button>
-    </form>
-    <div id="code-container">
-        <pre id="generated-code"></pre>
-    </div>
+        <div id="code-container">
+            <pre id="generated-code"></pre>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2024 Data Pipeline Generator. All rights reserved.</p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
