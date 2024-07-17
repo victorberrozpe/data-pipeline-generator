@@ -34,14 +34,14 @@ main {
     text-align: center;
 }
 
-h1 {
+h1, h2 {
     color: #007bff;
 }
 
 .pipeline {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Ensure alignment at the top */
+    align-items: flex-start;
     margin: 20px 0;
 }
 
@@ -136,8 +136,8 @@ h1 {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    max-height: 150px; /* Limit the height of the selected options */
-    overflow-y: auto; /* Add scroll if there are too many options */
+    max-height: 150px;
+    overflow-y: auto;
     transition: max-height 0.3s ease;
 }
 
@@ -190,4 +190,50 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
+}
+
+/* New styles for Resource Management and Estimated Cost sections */
+.resource-management, .estimated-cost {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: left;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.resource-slider {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.resource-slider label {
+    flex: 1;
+}
+
+.resource-slider input[type="range"] {
+    flex: 2;
+    margin-left: 10px;
+}
+
+.resource-slider input[type="number"] {
+    width: 60px;
+    margin-left: 10px;
+}
+
+/* Add some separation between different stages */
+.resource-stage {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.resource-stage:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
 }

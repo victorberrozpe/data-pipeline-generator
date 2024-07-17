@@ -19,6 +19,8 @@
     <main>
         <h1>Data Pipeline Generator</h1>
         <div class="pipeline">
+            <!-- Pipeline stages as before -->
+            <!-- Ingestion -->
             <div class="stage">
                 <label for="ingestion">Ingestion:</label>
                 <div class="custom-select" id="ingestion">
@@ -33,6 +35,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Storage -->
             <div class="stage">
                 <label for="storage">Storage:</label>
                 <div class="custom-select" id="storage">
@@ -47,6 +50,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Transformation -->
             <div class="stage">
                 <label for="transformation">Transformation:</label>
                 <div class="custom-select" id="transformation">
@@ -61,6 +65,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Analysis -->
             <div class="stage">
                 <label for="analysis">Analysis:</label>
                 <div class="custom-select" id="analysis">
@@ -78,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Orchestration -->
             <div class="stage">
                 <label for="orchestration">Orchestration:</label>
                 <div class="custom-select" id="orchestration">
@@ -91,6 +97,20 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <!-- Resource Management Section -->
+        <div class="resource-management">
+            <h2>Resource Management</h2>
+            <div id="resource-sliders">
+                <!-- Sliders will be added here dynamically -->
+            </div>
+        </div>
+        <!-- Estimated Cost Section -->
+        <div class="estimated-cost">
+            <h2>Estimated Cost</h2>
+            <div id="cost-estimation">
+                <!-- Estimated costs will be displayed here -->
             </div>
         </div>
         <button type="button" onclick="generateCode()">Get Pipeline Code</button>
